@@ -4,27 +4,27 @@ using System.Collections;
 public class InputHandler : MonoBehaviour
 {
 
-    Vector2 lastPosition, releasePosition;
+    private Vector2 lastPosition, releasePosition;
 
-    Throwable activeThrowable;
+    private Throwable activeThrowable;
 
     public LayerMask throwableLayerMask;
 
     public float zVelocity = 10;
-    [Range(1,20)]
+    [Range(1, 20)]
     public float throwMultiplier = 5;
 
-    float lastTime = 0;
+    private float lastTime = 0;
     public float minimalSwipeVelocity;
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         HandleInput();
     }
 
 
 
-    void HandleInput()
+    private void HandleInput()
     {
 
         if (Input.GetMouseButtonDown(0))
@@ -78,19 +78,19 @@ public class InputHandler : MonoBehaviour
                 float deltaTime = Time.time - lastTime;
                 releasePosition = Camera.main.ScreenToViewportPoint(Input.mousePosition);
 
-                if ((lastPosition - releasePosition).magnitude / deltaTime > minimalSwipeVelocity)
+
+                Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition + Vector3.forward * Mathf.Abs(Camera.main.transform.position.z - activeThrowable.transform.position.z));
+                position.z = activeThrowable.transform.position.z;
+
+                Vector3 dir = position - activeThrowable.transform.position;
+
+                if (dir.magnitude / deltaTime > minimalSwipeVelocity)
                 {
-
-                    Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition + Vector3.forward * Mathf.Abs(Camera.main.transform.position.z - activeThrowable.transform.position.z));
-                    position.z = activeThrowable.transform.position.z;
-
-                    Vector3 dir = position - activeThrowable.transform.position;
-
                     Vector3 velocity = dir.normalized * throwMultiplier;
 
                     velocity.z = zVelocity;
 
-                    activeThrowable.GetRigidbody().velocity = velocity;
+                    activeThrowable.Throw(velocity);
                 }
 
                 activeThrowable.Dettach();

@@ -1,7 +1,0 @@
-TODO:
-
-1. proceduralne generovanie pasu a prekaziek
-2. vymysliet ako robit rez do prekazky 
-
-
-3. hadzanie a presne pasovanie rotacie a pozicie do diery prekazky

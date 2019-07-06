@@ -8,12 +8,21 @@ public class Obstacle : MonoBehaviour
 
     private Animator anim;
 
-    void Start()
+    [HideInInspector]
+    public ObstacleSpawner spawner;
+
+    private bool disabled = false;
+
+    public Transform targetCenter;
+
+    private void Start()
     {
         anim = GetComponent<Animator>();
+        anim.enabled = false;
+
     }
 
-    void Update()
+    private void Update()
     {
         CheckForRotationPoint();
     }
@@ -21,11 +30,21 @@ public class Obstacle : MonoBehaviour
 
     private void CheckForRotationPoint()
     {
-        if (transform.position.z < GlobalVariables.instance.rotationPoint.position.z & !rotateAlready)
+        if (transform.position.z < GlobalVariables.instance.rotationPoint.position.z & !rotateAlready & !disabled)
         {
             anim.enabled = true;
+            Disable();
         }
     }
 
+
+    public void Disable()
+    {
+        disabled = true;
+        spawner.GetObstacles().Remove(this);
+        spawner.SetActiveObstacle(spawner.GetObstacles()[0]);
+        Destroy(gameObject, 2);
+
+    }
 
 }

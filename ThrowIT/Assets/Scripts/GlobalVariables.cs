@@ -13,6 +13,8 @@ public class GlobalVariables : MonoBehaviour
 
     [Header("Obstacle Variables")]
     public Transform rotationPoint;
+    public Obstacle activeObstacle;
+
 
     private void Awake()
     {
@@ -24,14 +26,6 @@ public class GlobalVariables : MonoBehaviour
         {
             Destroy(this);
         }
-    }
-
-    void Start()
-    {
-    }
-    void Update()
-    {
-
     }
 
 }

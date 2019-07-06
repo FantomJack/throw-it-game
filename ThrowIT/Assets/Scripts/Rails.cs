@@ -9,17 +9,27 @@ public class Rails : MonoBehaviour
 
     public Transform railSpawnPoint;
 
+    Rigidbody rb;
 
     void Start()
     {
         spawner = FindObjectOfType<RailSpawner>();
-
+        rb = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
         RedunancyCheck();
     }
+
+    void FixedUpdate()
+    {
+        Vector3 pos = transform.position;
+        pos.z -= GlobalVariables.instance.actualGlobalMovingSpeed * Time.fixedDeltaTime;
+        rb.MovePosition(pos);
+    }
+
+
 
 
     void OnBecameInvisible()
